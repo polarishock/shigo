@@ -14,7 +14,7 @@ export default defineConfig(({mode}) => {
       viteSingleFile(),
       VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['icon.svg'],
+        includeAssets: ['icon.jpg'],
         manifest: {
           name: '日本四國地區家族旅遊',
           short_name: '四國旅遊',
@@ -24,9 +24,9 @@ export default defineConfig(({mode}) => {
           display: 'standalone',
           icons: [
             {
-              src: 'icon.svg',
+              src: 'icon.jpg',
               sizes: '192x192 512x512',
-              type: 'image/svg+xml',
+              type: 'image/jpeg',
               purpose: 'any maskable'
             }
           ]

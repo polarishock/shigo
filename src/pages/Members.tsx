@@ -272,6 +272,21 @@ export default function Members() {
           ※ 點擊卡片即可直接撥打電話
         </p>
       </div>
+
+      {/* 登出按鈕 */}
+      <div className="mt-8">
+        <button
+          onClick={() => {
+            if (window.confirm('確定要登出這本小冊子嗎？')) {
+              localStorage.removeItem('shikoku_auth');
+              window.location.reload();
+            }
+          }}
+          className="w-full bg-white text-[#D97777] p-4 rounded-2xl font-black text-lg shadow-soft active:scale-95 transition-all border-2 border-[#FFD6D6] flex items-center justify-center gap-2"
+        >
+          登出小冊子
+        </button>
+      </div>
     </div>
   );
 }

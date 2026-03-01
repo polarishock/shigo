@@ -286,11 +286,11 @@ export default function Expense() {
           {/* 2. 快速記帳區 */}
           <form onSubmit={handleAddExpense} className="bg-white p-5 rounded-[2rem] border-2 border-[#E0E5D5] shadow-soft space-y-4">
             <div className="flex gap-2 items-center">
-              <span className="text-xl font-black text-[#8D775F] pl-2">¥</span>
+              <span className="text-xl font-black text-[#8D775F] pl-2 shrink-0">¥</span>
               <input 
                 type="number" 
                 placeholder="輸入日幣金額..." 
-                className="flex-1 bg-[#F7F4EB] p-4 rounded-2xl font-black text-xl text-[#4A5D5D] focus:ring-2 ring-[#F4D03F] outline-none border border-[#E0E5D5]"
+                className="flex-1 w-full min-w-0 bg-[#F7F4EB] p-4 rounded-2xl font-black text-xl text-[#4A5D5D] focus:ring-2 ring-[#F4D03F] outline-none border border-[#E0E5D5]"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
               />
@@ -298,7 +298,7 @@ export default function Expense() {
             <div className="flex gap-2">
               <input 
                 placeholder="備註 (例如: 買藥妝)" 
-                className="flex-1 bg-[#F7F4EB] px-4 py-3 rounded-xl font-bold text-sm outline-none border border-[#E0E5D5] focus:ring-2 ring-[#F4D03F]"
+                className="flex-1 w-full min-w-0 bg-[#F7F4EB] px-4 py-3 rounded-xl font-bold text-sm outline-none border border-[#E0E5D5] focus:ring-2 ring-[#F4D03F]"
                 value={item}
                 onChange={(e) => setItem(e.target.value)}
               />
@@ -322,7 +322,7 @@ export default function Expense() {
               <select 
                 value={payer}
                 onChange={(e) => setPayer(e.target.value)}
-                className="bg-[#F7F4EB] px-3 py-3 rounded-xl font-bold text-sm outline-none border border-[#E0E5D5] focus:ring-2 ring-[#F4D03F] text-[#4A5D5D]"
+                className="bg-[#F7F4EB] px-2 py-3 rounded-xl font-bold text-sm outline-none border border-[#E0E5D5] focus:ring-2 ring-[#F4D03F] text-[#4A5D5D] shrink-0"
               >
                 {MEMBERS.map(m => (
                   <option key={m} value={m}>{m} 付款</option>
@@ -339,7 +339,7 @@ export default function Expense() {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="bg-[#F7F4EB] p-3 rounded-xl border border-[#E0E5D5] text-[#8D775F] hover:bg-[#E0E5D5] transition-colors"
+                className="bg-[#F7F4EB] p-3 rounded-xl border border-[#E0E5D5] text-[#8D775F] hover:bg-[#E0E5D5] transition-colors shrink-0"
                 title="上傳發票/收據"
               >
                 <Camera size={20} />
@@ -349,7 +349,7 @@ export default function Expense() {
                 type="submit"
                 disabled={isSubmitting || !amount || !item.trim()}
                 className={cn(
-                  "flex-1 bg-gradient-to-b from-[#FFF59D] to-[#F4D03F] text-[#8D775F] px-4 py-3 rounded-xl font-black shadow-soft active:scale-95 transition-all border-2 border-[#D4AC0D]",
+                  "flex-1 min-w-0 bg-gradient-to-b from-[#FFF59D] to-[#F4D03F] text-[#8D775F] px-2 py-3 rounded-xl font-black shadow-soft active:scale-95 transition-all border-2 border-[#D4AC0D] whitespace-nowrap",
                   (isSubmitting || !amount || !item.trim()) && "opacity-50 cursor-not-allowed active:scale-100"
                 )}
               >

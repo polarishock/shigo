@@ -1,12 +1,12 @@
 import { NavLink } from 'react-router-dom';
-import { Car, Ship, Receipt, BookOpen, CheckSquare, Users } from 'lucide-react';
+import { Car, Ship, Receipt, ShoppingBag, CheckSquare, Users } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 const navItems = [
   { path: '/', icon: Car, label: '行程' },
   { path: '/bookings', icon: Ship, label: '預訂' },
   { path: '/expense', icon: Receipt, label: '記帳' },
-  { path: '/journal', icon: BookOpen, label: '日誌' },
+  { path: '/lists', icon: ShoppingBag, label: '清單' },
   { path: '/planning', icon: CheckSquare, label: '準備' },
   { path: '/members', icon: Users, label: '成員' },
 ];

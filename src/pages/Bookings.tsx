@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plane, Bed, Car, Ticket, MapPin, Clock, Calendar, FileText } from 'lucide-react';
+import { Plane, Bed, Car, Ticket, MapPin, Clock, Calendar, FileText, Phone } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 // 預訂分類
@@ -49,7 +49,9 @@ const BOOKINGS = [
     details: [
       { icon: Calendar, label: '入住', value: '2026/09/05 16:00 後' },
       { icon: Calendar, label: '退房', value: '2026/09/09 10:00 前' },
-      { icon: MapPin, label: '地址', value: '香川縣丸龜市濱町25-1' }
+      { icon: MapPin, label: '地址', value: '香川縣丸龜市濱町25-1' },
+      { icon: MapPin, label: '英文地址', value: '25-1 Hamamachi, Marugame, Kagawa' },
+      { icon: Phone, label: '電話', value: '+81-877-21-1045' }
     ],
     theme: { bg: 'bg-[#FFF3E0]', text: 'text-[#E65100]' },
     icon: Bed
@@ -63,7 +65,9 @@ const BOOKINGS = [
     details: [
       { icon: Calendar, label: '入住', value: '2026/09/09 14:00 後' },
       { icon: Calendar, label: '退房', value: '2026/09/12 12:00 前' },
-      { icon: MapPin, label: '地址', value: '香川縣高松市濱之町1-1' }
+      { icon: MapPin, label: '地址', value: '香川縣高松市濱之町1-1' },
+      { icon: MapPin, label: '英文地址', value: '1-1 Hamanocho, Takamatsu, Kagawa' },
+      { icon: Phone, label: '電話', value: '+81-87-811-1111' }
     ],
     theme: { bg: 'bg-[#FFF3E0]', text: 'text-[#E65100]' },
     icon: Bed
