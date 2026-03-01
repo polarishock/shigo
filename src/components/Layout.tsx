@@ -11,7 +11,7 @@ const Header = () => (
   </header>
 );
 
-export function Layout() {
+export function Layout({ isAuthenticated }: { isAuthenticated: boolean }) {
   return (
     <div className="min-h-screen pb-24 max-w-md mx-auto bg-ac-bg/50 shadow-2xl overflow-hidden relative">
       <Header />
@@ -20,7 +20,7 @@ export function Layout() {
         <Outlet />
       </main>
       
-      <BottomNav />
+      <BottomNav isAuthenticated={isAuthenticated} />
     </div>
   );
 }

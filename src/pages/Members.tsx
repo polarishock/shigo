@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, ShieldAlert, Heart, ChevronDown, BookUser, AlertCircle } from 'lucide-react';
+import { Phone, ShieldAlert, Heart, ChevronDown, BookUser, AlertCircle, Lock, User, ArrowRight } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 // 模擬成員資料
-const MEMBERS = [
+const MEMBERS_DATA = [
   {
     id: 'm1',
     name: '阿倫 (Alan)',
@@ -59,6 +59,15 @@ const MEMBERS = [
   }
 ];
 
+const LOGIN_MEMBERS = [
+  { id: '1', name: '阿倫', emoji: '🐶' },
+  { id: '2', name: '貝蒂', emoji: '🐱' },
+  { id: '3', name: '查理', emoji: '🐻' },
+  { id: '4', name: '黛安', emoji: '🐰' }
+];
+
+const CORRECT_PASSWORD = '20260301';
+
 // 緊急聯絡電話資料
 const EMERGENCY_NUMBERS = [
   { label: '警察（事故、犯罪）', number: '110', desc: '日本國內直撥' },
@@ -69,13 +78,148 @@ const EMERGENCY_NUMBERS = [
   { label: '外交部旅外緊急服務', number: '+886-3-398-5807', desc: '24小時專線' },
 ];
 
-export default function Members() {
+interface MembersProps {
+  isAuthenticated: boolean;
+  onLogin: (member: { name: string, emoji: string }) => void;
+  onLogout: () => void;
+}
+
+export default function Members({ isAuthenticated, onLogin, onLogout }: MembersProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [isFlipped, setIsFlipped] = useState(false);
+  
+  // 登入相關狀態
+  const [password, setPassword] = useState('');
+  const [selectedMember, setSelectedMember] = useState<string | null>(null);
+  const [error, setError] = useState('');
+  const [isShaking, setIsShaking] = useState(false);
 
   const toggleExpand = (id: string) => {
     setExpandedId(expandedId === id ? null : id);
   };
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!selectedMember) {
+      setError('請選擇你是哪位成員喔！');
+      triggerShake();
+      return;
+    }
+
+    if (password !== CORRECT_PASSWORD) {
+      setError('密碼錯誤，請再試一次！');
+      triggerShake();
+      return;
+    }
+
+    const member = LOGIN_MEMBERS.find(m => m.id === selectedMember);
+    if (member) {
+      // 儲存登入狀態
+      localStorage.setItem('shikoku_auth', JSON.stringify({
+        isLoggedIn: true,
+        member: { name: member.name, emoji: member.emoji }
+      }));
+      onLogin({ name: member.name, emoji: member.emoji });
+    }
+  };
+
+  const triggerShake = () => {
+    setIsShaking(true);
+    setTimeout(() => setIsShaking(false), 500);
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-center p-2">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-sm bg-white p-8 rounded-[2.5rem] shadow-soft border-2 border-[#E0E5D5]"
+        >
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 bg-[#F7F4EB] rounded-2xl flex items-center justify-center border-2 border-[#E0E5D5] mx-auto mb-4">
+              <Lock size={32} className="text-[#8D775F]" />
+            </div>
+            <h1 className="text-2xl font-black text-[#4A5D5D] mb-2">成員專屬區域</h1>
+            <p className="text-[#8D775F] font-bold text-sm">請先登入以解鎖完整手冊</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-6">
+            {/* 選擇成員 */}
+            <div className="space-y-3">
+              <label className="text-sm font-black text-[#6B8E8E] flex items-center gap-2">
+                <User size={16} />
+                你是哪位成員？
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                {LOGIN_MEMBERS.map(member => (
+                  <button
+                    key={member.id}
+                    type="button"
+                    onClick={() => {
+                      setSelectedMember(member.id);
+                      setError('');
+                    }}
+                    className={cn(
+                      "p-3 rounded-2xl border-2 transition-all flex flex-col items-center gap-1",
+                      selectedMember === member.id 
+                        ? "border-[#F4D03F] bg-[#FFF59D]/30 shadow-soft" 
+                        : "border-[#E0E5D5] bg-[#F7F4EB] hover:border-[#8FB7D3]"
+                    )}
+                  >
+                    <span className="text-2xl">{member.emoji}</span>
+                    <span className="font-black text-[#4A5D5D] text-sm">{member.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* 輸入密碼 */}
+            <div className="space-y-3">
+              <label className="text-sm font-black text-[#6B8E8E] flex items-center gap-2">
+                <Lock size={16} />
+                通關密碼
+              </label>
+              <input
+                type="password"
+                placeholder="請輸入密碼..."
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setError('');
+                }}
+                className="w-full bg-[#F7F4EB] p-4 rounded-2xl font-black text-xl text-center text-[#4A5D5D] focus:ring-2 ring-[#F4D03F] outline-none border-2 border-[#E0E5D5] tracking-widest"
+              />
+            </div>
+
+            {/* 錯誤訊息 */}
+            <div className="h-6 flex items-center justify-center">
+              {error && (
+                <motion.p 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1, x: isShaking ? [-10, 10, -10, 10, 0] : 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="text-[#D97777] font-bold text-sm"
+                >
+                  {error}
+                </motion.p>
+              )}
+            </div>
+
+            {/* 登入按鈕 */}
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-b from-[#FFF59D] to-[#F4D03F] text-[#8D775F] p-4 rounded-2xl font-black text-lg shadow-soft active:scale-95 transition-all border-2 border-[#D4AC0D] flex items-center justify-center gap-2"
+            >
+              登入並解鎖
+              <ArrowRight size={20} />
+            </button>
+          </form>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 pb-8">
@@ -154,7 +298,7 @@ export default function Members() {
 
       {/* 成員列表 */}
       <div className="space-y-4">
-        {MEMBERS.map((member) => {
+        {MEMBERS_DATA.map((member) => {
           const isExpanded = expandedId === member.id;
           
           return (
@@ -278,8 +422,7 @@ export default function Members() {
         <button
           onClick={() => {
             if (window.confirm('確定要登出這本小冊子嗎？')) {
-              localStorage.removeItem('shikoku_auth');
-              window.location.reload();
+              onLogout();
             }
           }}
           className="w-full bg-white text-[#D97777] p-4 rounded-2xl font-black text-lg shadow-soft active:scale-95 transition-all border-2 border-[#FFD6D6] flex items-center justify-center gap-2"

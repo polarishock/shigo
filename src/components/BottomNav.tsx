@@ -11,11 +11,15 @@ const navItems = [
   { path: '/members', icon: Users, label: '成員' },
 ];
 
-export function BottomNav() {
+export function BottomNav({ isAuthenticated }: { isAuthenticated: boolean }) {
+  const filteredNavItems = isAuthenticated 
+    ? navItems 
+    : navItems.filter(item => item.path === '/members');
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-[#E0E5D5] pb-safe pt-2 px-4 z-50 rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
       <div className="flex justify-between items-center max-w-md mx-auto">
-        {navItems.map((item) => {
+        {filteredNavItems.map((item) => {
           const Icon = item.icon;
           return (
             <NavLink

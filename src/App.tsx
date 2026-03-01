@@ -12,11 +12,11 @@ import Expense from './pages/Expense';
 import Lists from './pages/Lists';
 import Planning from './pages/Planning';
 import Members from './pages/Members';
-import Login from './pages/Login';
 
 export default function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<{ name: string, emoji: string } | null>(null);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   useEffect(() => {
     // 檢查本地是否已經登入過
@@ -27,16 +27,12 @@ export default function App() {
         if (parsed && parsed.isLoggedIn) {
           setIsAuthenticated(true);
           setCurrentUser(parsed.member);
-        } else {
-          setIsAuthenticated(false);
         }
       } catch (e) {
         console.error('Auth check error:', e);
-        setIsAuthenticated(false);
       }
-    } else {
-      setIsAuthenticated(false);
     }
+    setIsCheckingAuth(false);
   }, []);
 
   const handleLogin = (member: { name: string, emoji: string }) => {
@@ -44,8 +40,13 @@ export default function App() {
     setCurrentUser(member);
   };
 
-  // 避免畫面閃爍，等待狀態確認
-  if (isAuthenticated === null) {
+  const handleLogout = () => {
+    localStorage.removeItem('shikoku_auth');
+    setIsAuthenticated(false);
+    setCurrentUser(null);
+  };
+
+  if (isCheckingAuth) {
     return (
       <div className="min-h-screen bg-[#F7F4EB] flex flex-col items-center justify-center gap-4">
         <div className="w-12 h-12 border-4 border-[#8FB7D3] border-t-transparent rounded-full animate-spin"></div>
@@ -57,23 +58,34 @@ export default function App() {
   return (
     <HashRouter>
       <Routes>
-        {/* 登入路由 */}
-        <Route 
-          path="/login" 
-          element={isAuthenticated ? <Navigate to="/" replace /> : <Login onLogin={handleLogin} />} 
-        />
-
-        {/* 受保護的主程式路由 */}
         <Route 
           path="/" 
-          element={isAuthenticated ? <Layout /> : <Navigate to="/login" replace />}
+          element={<Layout isAuthenticated={isAuthenticated} />}
         >
-          <Route index element={<Schedule />} />
-          <Route path="bookings" element={<Bookings />} />
-          <Route path="expense" element={<Expense />} />
-          <Route path="lists" element={<Lists />} />
-          <Route path="planning" element={<Planning />} />
-          <Route path="members" element={<Members />} />
+          <Route 
+            index 
+            element={isAuthenticated ? <Schedule /> : <Navigate to="/members" replace />} 
+          />
+          <Route 
+            path="bookings" 
+            element={isAuthenticated ? <Bookings /> : <Navigate to="/members" replace />} 
+          />
+          <Route 
+            path="expense" 
+            element={isAuthenticated ? <Expense /> : <Navigate to="/members" replace />} 
+          />
+          <Route 
+            path="lists" 
+            element={isAuthenticated ? <Lists /> : <Navigate to="/members" replace />} 
+          />
+          <Route 
+            path="planning" 
+            element={isAuthenticated ? <Planning /> : <Navigate to="/members" replace />} 
+          />
+          <Route 
+            path="members" 
+            element={<Members isAuthenticated={isAuthenticated} onLogin={handleLogin} onLogout={handleLogout} />} 
+          />
         </Route>
 
         {/* 萬用路由：未匹配時導向首頁 */}
