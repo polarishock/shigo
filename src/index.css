@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Nunito:wght@400;600;700;800&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Nunito", ui-sans-serif, system-ui, sans-serif;
+  --font-handwriting: "Klee One", cursive;
+  --font-rounded: "Zen Maru Gothic", sans-serif;
+  
+  --color-ac-bg: #F7F4EB;
+  --color-ac-green: #88B04B;
+  --color-ac-green-dark: #6A8A3A;
+  --color-ac-brown: #8D6E63;
+  --color-ac-brown-dark: #5D4037;
+  --color-ac-yellow: #F4D03F;
+  --color-ac-orange: #F39C12;
+  --color-ac-text: #4A4A4A;
+  --color-ac-text-light: #7A7A7A;
+
+  --shadow-soft: 4px 4px 0px #E0E5D5;
+  --shadow-soft-active: 1px 1px 0px #E0E5D5;
+}
+
+@layer base {
+  html {
+    font-size: 17px;
+  }
+  body {
+    @apply bg-ac-bg text-ac-text font-sans antialiased;
+    /* Subtle dot pattern for the background */
+    background-image: radial-gradient(#E0E5D5 2px, transparent 2px);
+    background-size: 24px 24px;
+  }
+}
+
+@utility card-ac {
+  @apply bg-white rounded-2xl shadow-soft border-2 border-[#E0E5D5] transition-all duration-200;
+}
+
+@utility btn-ac {
+  @apply bg-ac-green text-white font-bold py-3 px-6 rounded-xl shadow-soft border-2 border-ac-green-dark transition-all duration-200 active:scale-95 active:shadow-soft-active active:translate-y-1;
+}
+
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
