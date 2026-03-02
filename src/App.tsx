@@ -80,39 +80,49 @@ export default function App() {
   // --- 第一層：密碼鎖定畫面 ---
   if (!isUnlocked) {
     return (
-      <div className="min-h-screen bg-[#F7F4EB] flex flex-col items-center justify-center p-6 text-[#8D775F]">
-        <div className="bg-white w-full max-w-sm p-8 rounded-[2.5rem] shadow-2xl border border-[#E5DCC5] space-y-6">
-          <div className="text-center">
-            <span className="text-5xl">🗾</span>
-            <h1 className="text-2xl font-black mt-4 text-[#5A4B3B]">2026 四國之旅</h1>
-            <p className="text-sm opacity-70 mt-1 text-[#8D775F]">Family Travel Guide</p>
-          </div>
-
-          {/* 旅遊宣言預覽 */}
-          <div className="bg-[#FAF9F6] p-4 rounded-2xl text-xs space-y-2 border border-[#F1EEE5] italic">
-            <p className="font-bold text-center mb-1 not-italic">📜 旅遊和平小提醒</p>
-            <p>• 行程彈性，開心出門愉快回家</p>
-            <p>• 遇狀況先解決問題，不責怪彼此</p>
-            <p>• 禁說：難吃、有啥好看、好貴</p>
-          </div>
-
-          <div className="space-y-4">
-            <input 
-              type="number" 
-              pattern="\d*" 
-              inputmode="numeric"
-              placeholder="請輸入通行密碼"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full text-center text-2xl p-4 bg-[#F7F4EB] rounded-2xl outline-none border-2 border-transparent focus:border-[#8FB7D3] transition-all font-mono tracking-widest"
-              onKeyDown={(e) => e.key === 'Enter' && handleUnlock()}
-            />
-            <button 
-              onClick={handleUnlock}
-              className="w-full bg-[#8FB7D3] hover:bg-[#7AA6C3] text-white font-bold py-4 rounded-2xl shadow-lg active:scale-95 transition-all text-lg"
-            >
-              開啟旅程
-            </button>
+      <div style={{
+        position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+        backgroundColor: '#F7F4EB', display: 'flex', alignItems: 'center', 
+        justifyContent: 'center', zIndex: 9999, padding: '20px'
+      }}>
+        <div style={{
+          backgroundColor: 'white', width: '100%', maxWidth: '320px',
+          padding: '40px 20px', borderRadius: '30px', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)',
+          textAlign: 'center', border: '1px solid #E5DCC5'
+        }}>
+          <div style={{ fontSize: '40px', marginBottom: '10px' }}>🗾</div>
+          <h2 style={{ fontSize: '20px', fontWeight: 'bold', color: '#5A4B3B', marginBottom: '20px' }}>
+            請輸入通行密碼
+          </h2>
+          
+          <input 
+            type="number" 
+            pattern="\d*" 
+            inputmode="numeric"
+            placeholder="****"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={{
+              width: '100%', textAlign: 'center', fontSize: '24px', padding: '12px',
+              backgroundColor: '#F7F4EB', borderRadius: '15px', border: 'none',
+              outline: 'none', marginBottom: '20px', letterSpacing: '0.5em'
+            }}
+          />
+          
+          <button 
+            onClick={handleUnlock}
+            style={{
+              width: '100%', backgroundColor: '#8FB7D3', color: 'white',
+              fontWeight: 'bold', padding: '15px', borderRadius: '15px',
+              border: 'none', cursor: 'pointer', fontSize: '16px'
+            }}
+          >
+            開啟旅程
+          </button>
+          
+          <div style={{ marginTop: '20px', fontSize: '12px', color: '#8D775F', lineHeight: '1.6' }}>
+            📜 記得我們的旅遊宣言：<br/>
+            情緒穩定、解決優先、不說負面話！
           </div>
         </div>
       </div>
